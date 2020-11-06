@@ -1,0 +1,54 @@
+*
+{
+    margin: 0;
+}
+.gameField
+{
+    background-color: lightblue;    
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 300px 0 0 0 ;
+    text-align: center;
+    
+}
+#blocks
+{
+    text-align: center;
+    font-size: 0;        
+}
+.block
+{
+    display: inline-block;
+    background-color: blue;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    position: relative;           
+    border: 3px solid black;
+}
+.block:not(:first-child){
+    border-left: 0px;
+}
+.block p
+{
+    position: absolute;
+    top: 50%;
+    transform:translate(0,-50%);
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+#button
+{        
+    width: 500px;
+    height: 100px;
+    background-color: green;
+    color: white;
+    margin: 0px auto 0px auto;
+    text-align: center;
+    font-size: 36pt;
+}
+#button p
+{
+    line-height: 100px;
+}
