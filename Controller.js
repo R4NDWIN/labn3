@@ -8,22 +8,22 @@ class Controller
         this.clickBlockFunction = null;
         this.clickCanvasFunction = null;
         this.rightNumbersCount = 0;  
-        this.rightDigits = [];             
+        this.rightDigits = [];                   
     }
-    clickButton(event){               
-        this.view.hideStartButton();        
+    clickButton(event){              
+        this.view.hideStartButton();                
         this.model.setDigits();
-        this.view.renderBlocks(model.getDigits());
+        this.view.render(model.getDigits());
+        this.view.showDigitsBlock();
+        this.view.showDigits();       
         this.showNumberIndices = [false,false,false,false,false]  
         this.rightDigits = []; 
-        this.rightNumbersCount = 0;
-        this.view.setClickCanvasFunction(undefined); 
-        setTimeout(this.view.hideDigits.bind(view),5000);               
-        setTimeout(this.view.setClickCanvasFunction.bind(view),5000,this.clickCanvasFunction);               
-        this.view.setButtonClickEvent(undefined);
+        this.rightNumbersCount = 0;        
+        setTimeout(this.view.hideDigits.bind(view),5000);
+        setTimeout(this.view.setClickBlockFunction.bind(view),5000,this.clickBlockFunction)                                                  
     }    
-    clickCanvas(event){
-        var index = this.view.clickCollision(event);        
+    clickBlock(event){
+        var index = this.view.getNumberOfClickedBlock(event);        
         var clickedDigit = this.model.getDigit(index);
         var rightDigit = this.model.getDigitFromSorted(this.rightNumbersCount)
         if (this.rightNumbersCount <= 4)
@@ -31,30 +31,28 @@ class Controller
             if (rightDigit != clickedDigit && this.rightDigits.indexOf(clickedDigit) == -1){
                 this.view.playAudio("audio/error.mp3");               
             }
-            else if (this.rightDigits.indexOf(clickedDigit) == -1){                
-                this.showNumberIndices[index] = true;
-                this.view.showDigits(this.model.getDigits(),this.showNumberIndices);                
+            else if (this.rightDigits.indexOf(clickedDigit) == -1){                                
+                this.view.showDigit(index);              
                 this.rightDigits.push(rightDigit);
                 this.rightNumbersCount++;                
                 this.view.playAudio("audio/success.mp3");
             }
             if (this.rightNumbersCount == 5){
-
-                this.showNumberIndices[index] = true;
-                this.view.showDigits(this.model.getDigits(),this.showNumberIndices);
+                
+                this.view.showDigit(index);              
                 this.view.playAudio("audio/end.mp3")
-                setTimeout(this.view.hideDigitsBlock.bind(view),1000);
-                setTimeout(this.view.renderStartButton.bind(view),1000);                                     
-                this.view.setButtonClickEvent(this.clickFunction);                             
+                setTimeout(this.view.hideDigitsBlock.bind(view),3000);
+                setTimeout(this.view.showStartButton.bind(view),3000);                                                      
+                this.view.setClickBlockFunction(undefined);                        
             }            
         }         
     }
     init(){
         this.clickFunction = this.clickButton.bind(this);
         this.view.setButtonClickEvent(this.clickFunction);        
-        this.clickCanvasFunction = this.clickCanvas.bind(this);
-        this.view.setClickCanvasFunction(this.clickCanvasFunction);              
-        this.view.renderStartButton();         
+        this.clickBlockFunction = this.clickBlock.bind(this);                                     
+        this.view.showStartButton();         
+        this.view.hideDigitsBlock();
     }
 }
 var controller = new Controller(view,model);
